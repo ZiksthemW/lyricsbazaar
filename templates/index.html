@@ -21,12 +21,19 @@
             </ul>
         </nav>
 
-        <h3 class="outline"> Lyrics Bazaar </h3>
+        <h3 class="outline"> {{ayarlar["uygAd"]}} </h3>
         <hr/><br/>
         <section style="padding-left: 25%; padding-right: 25%; padding-top: 10%; padding-bottom: 10%">
             <p> Bir şarkıyı beğendin fakat liriklerini bulamıyor musunuz? O zaman tam adresine geldiniz. <hr/><br/>Maalesef hatasız kul olmaz, eğer liriklerini bulamadığınız bir şarkı var ise bize şarkıyı bize ileterek en kısa sürede siteye eklenmesinde katkıda bulunabilirsiniz.  </p>
-            <a href="mailto:ziksthemw@gmail.com?subject=Sitenizde%20eksik%20bir%20sarki%20var!&body=Merhaba!%0D%0A%0D%0ASitenizde%20goremedigim%20bir%20sarki%20bulunmakta.%20Eklerseniz%20cok%20mutlu%20olurum!%0D%0A%0D%0AIstedigim%20sarki%20ise%20bu%3A%20"><button>Bize Şarkı Öner!</button></a>
+            <a href="mailto:{{ayarlar['yntcMail']}}?subject=Sitenizde%20eksik%20bir%20sarki%20var!&body=Merhaba!%0D%0A%0D%0ASitenizde%20goremedigim%20bir%20sarki%20bulunmakta.%20Eklerseniz%20cok%20mutlu%20olurum!%0D%0A%0D%0AIstedigim%20sarki%20ise%20bu%3A%20"><button>Bize Şarkı Öner!</button></a>
         </section><br>
+
+        {% if ayarlar["reklam"] == "True" %}
+        <section>
+            <img alt="reklam" src="{{url_for('static', filename='img/bannerOrnek.png')}}"/>
+        </section>
+        {% endif %}
+
         <small class="outline"> Yenilenmiş teknolojilerimiz ile kullanıcılarımıza eşsiz bir deneyim ve memnuniyet sunmayı hedefliyoruz. </small>
     </body>
 </html>

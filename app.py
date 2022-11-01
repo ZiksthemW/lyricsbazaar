@@ -1,4 +1,6 @@
-from flask import Flask, render_template, redirect, url_for, request, session, abort
+from crypt import methods
+from attr import has
+from flask import Flask, render_template, redirect, request
 from bs4 import BeautifulSoup as bs
 import requests
 
@@ -6,10 +8,16 @@ app = Flask(__name__)
 linkIcerik = requests.get("https://www.songlyrics.com/")
 site = bs(linkIcerik.content, 'html.parser')
 
+ayarlar = {}
+
+with open("ayarlar.txt", encoding="utf-8") as dosya:
+    for i in dosya.readlines():
+        i = i.replace("\n", "").split("=")
+        ayarlar[i[0]] = i[1]
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("index.html", ayarlar=ayarlar)
 
 @app.route("/ara", methods=["GET", "POST"])
 def sarkiAra():
@@ -20,7 +28,7 @@ def sarkiAra():
         for sarki in sarkilar.findAll('tr', attrs={'itemprop': 'itemListElement'}):
             sarkiList.append(str(sarki.h3.text + "," +  sarki.span.text).split(","))
 
-        return render_template("ara.html", sarkilar=sarkiList)
+        return render_template("ara.html", sarkilar=sarkiList, ayarlar=ayarlar)
     
     return redirect("/ara/" + request.form.get("arandi"))
 
@@ -31,9 +39,9 @@ def lyrics(sarkici, sarki):
     sozler = lirik.find('div', attrs={'id': 'songLyricsDiv-outer'})
 
     if (sozler != None):
-        return render_template("lirik.html", sarkici=sarkici, sarki=sarki, sozler=sozler.text)
+        return render_template("lirik.html", sarkici=sarkici, sarki=sarki, sozler=sozler.text, ayarlar=ayarlar)
     else:
-        return redirect("/lyrics/Rick Astley/Never Gonna Give You Up")
+        return redirect("/ara")
 
 @app.route("/ara/<string:aranan>", methods=["GET", "POST"])
 def sarkiCikti(aranan):
@@ -55,7 +63,7 @@ def sarkiCikti(aranan):
             dongu = dongu + 1
 
     print(sarkilar)
-    return render_template("araCikti.html", aranan=aranan, sarkilar=sarkilar)
+    return render_template("araCikti.html", aranan=aranan, sarkilar=sarkilar, ayarlar=ayarlar)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=False)

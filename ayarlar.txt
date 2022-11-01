@@ -1,0 +1,3 @@
+reklam=True
+uygAd=Test Ad
+yntcMail=ziksthemw@gmail.com
